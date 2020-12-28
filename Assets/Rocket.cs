@@ -20,10 +20,11 @@ public class Rocket : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-	    ProcessInput();	    
+	    Thrust();
+	    Rotate();
     }
     
-	private void ProcessInput()
+	private void Thrust()
 	{
 		if(Input.GetKey(KeyCode.Space))
 		{
@@ -38,6 +39,12 @@ public class Rocket : MonoBehaviour
 		{
 			audioSource.Stop();
 		}
+	}
+	
+	private void Rotate()
+	{
+		
+		rigiBody.freezeRotation = true;
 		
 		if(Input.GetKey(KeyCode.A))
 		{
@@ -48,29 +55,8 @@ public class Rocket : MonoBehaviour
 		{
 			print("Right Thruster Activated!");
 			transform.Rotate(-Vector3.forward);
-		}                                                                                      
-	
+		}
 		
-		//switch(Input.GetKey(KeyCode))
-		//	{
-		//	case (Space):
-		//		print("Blasters Activated!");
-		//		break;
-		//	case (RightArrow):
-		//		print("Left Thruster Activated!");
-		//		break;
-		//	case (LeftArrow):
-		//		print("Right Thruster Activated!");
-		//		break;
-		//	case (UpArrow):
-		//		print("Forward Thrusters Activated!");
-		//		break;
-		//	case (DownArrow):
-		//		print("Breaks Activated!");
-		//		break;
-		//	default:
-		//		// code block
-    	//		break;
-		//	}
+		rigiBody.freezeRotation = false;
 	}
 }
