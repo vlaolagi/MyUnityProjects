@@ -8,11 +8,13 @@ public class Rocket : MonoBehaviour
     
 	// Variables
 	Rigidbody rigiBody;
+	AudioSource audioSource;
 	
 	// Start is called before the first frame update
     void Start()
     {
 	    rigiBody = GetComponent<Rigidbody>();
+	    audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -27,16 +29,26 @@ public class Rocket : MonoBehaviour
 		{
 			print("Thrusters Activated!");
 			rigiBody.AddRelativeForce(Vector3.up);
+			if(!audioSource.isPlaying)
+			{
+				audioSource.Play();
+			}
+		}
+		else
+		{
+			audioSource.Stop();
 		}
 		
 		if(Input.GetKey(KeyCode.A))
 		{
 			print("Left Thruster Activated!");
+			transform.Rotate(Vector3.forward);
 		}
 		else if(Input.GetKey(KeyCode.D))
 		{
 			print("Right Thruster Activated!");
-		}
+			transform.Rotate(-Vector3.forward);
+		}                                                                                      
 	
 		
 		//switch(Input.GetKey(KeyCode))
