@@ -10,6 +10,9 @@ public class Rocket : MonoBehaviour
 	Rigidbody rigiBody;
 	AudioSource audioSource;
 	
+	[SerializeField] float rcsThrust = 250f; // reaction control system
+	[SerializeField] float mainThrust = 50f; // reaction control system
+	
 	// Start is called before the first frame update
     void Start()
     {
@@ -29,7 +32,7 @@ public class Rocket : MonoBehaviour
 		if(Input.GetKey(KeyCode.Space))
 		{
 			print("Thrusters Activated!");
-			rigiBody.AddRelativeForce(Vector3.up);
+			rigiBody.AddRelativeForce(Vector3.up * mainThrust);
 			if(!audioSource.isPlaying)
 			{
 				audioSource.Play();
@@ -46,15 +49,17 @@ public class Rocket : MonoBehaviour
 		
 		rigiBody.freezeRotation = true;
 		
+		float rotationThisFrame = rcsThrust * Time.deltaTime;
+		
 		if(Input.GetKey(KeyCode.A))
 		{
 			print("Left Thruster Activated!");
-			transform.Rotate(Vector3.forward);
+			transform.Rotate(Vector3.forward * rotationThisFrame);
 		}
 		else if(Input.GetKey(KeyCode.D))
 		{
 			print("Right Thruster Activated!");
-			transform.Rotate(-Vector3.forward);
+			transform.Rotate(-Vector3.forward * rotationThisFrame);
 		}
 		
 		rigiBody.freezeRotation = false;
