@@ -1,7 +1,9 @@
-﻿using System;
+﻿// Namespaces
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Rocket : MonoBehaviour
 { 
@@ -13,6 +15,11 @@ public class Rocket : MonoBehaviour
 	[SerializeField] float rcsThrust = 250f; // reaction control system
 	[SerializeField] float mainThrust = 50f; // reaction control system
 	
+	enum State {Alive, Dying, Transcending};
+	State state = State.Alive;
+	
+	float delay = 1f;
+	
 	// Start is called before the first frame update
     void Start()
     {
@@ -23,13 +30,19 @@ public class Rocket : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-	    Thrust();
-	    Rotate();
+	    if(state == State.Alive) 
+	    {
+	    	Thrust();
+		    Rotate();
+	    }
     }
     
 	void OnCollisionEnter(Collision collision) 
 	{
+		if(state != State.Alive){return;}
+		
 		print("Collided!");
+		int sceneValue = 0;
 		switch (collision.gameObject.tag)
 		{
 			case "Friendly":
@@ -37,14 +50,40 @@ public class Rocket : MonoBehaviour
 				break;
 			case "Fuel":
 				print("Refueling!");
+				state = State.Alive;
 				break;
 			case "Target":
 				print("Congratulations!");
+				state = State.Transcending;
+				sceneValue = 1;
+				StartCoroutine(LoadNextScene(sceneValue, delay));
 				break;
 			default:
 				print("Dead!");
+				state = State.Dying;
+				sceneValue = 0;
+				StartCoroutine(LoadNextScene(sceneValue, delay));
 				break;
-			
+		}
+	}
+	
+	// Methods
+	IEnumerator LoadNextScene(int val, float delay)
+	{
+		switch (val)
+		{
+		case 0:
+			yield return new WaitForSeconds(delay);
+			SceneManager.LoadScene(0);
+			break;
+		case 1:
+			yield return new WaitForSeconds(delay);
+			SceneManager.LoadScene(1);
+			break;
+		default:
+			yield return new WaitForSeconds(delay);
+			SceneManager.LoadScene(1);
+			break;
 		}
 	}
 	
