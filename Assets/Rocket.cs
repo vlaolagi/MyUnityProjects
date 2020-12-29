@@ -8,23 +8,28 @@ using UnityEngine.SceneManagement;
 public class Rocket : MonoBehaviour
 { 
     
-	// Variables
+	// Variables	
 	Rigidbody rigiBody;
 	AudioSource audioSource;
 	
 	[SerializeField] float rcsThrust = 250f; // reaction control system
 	[SerializeField] float mainThrust = 50f; // reaction control system
+	[SerializeField] float delay = 3f;
+	[SerializeField] AudioClip mainEngine;
+	[SerializeField] AudioClip success;
+	[SerializeField] AudioClip death;
 	
 	enum State {Alive, Dying, Transcending};
 	State state = State.Alive;
-	
-	float delay = 1f;
+
+	int sceneValue = 0;
 	
 	// Start is called before the first frame update
     void Start()
     {
 	    rigiBody = GetComponent<Rigidbody>();
 	    audioSource = GetComponent<AudioSource>();
+	    GameObject.Find ("Notification").transform.localScale = new Vector3(0, 0, 0);
     }
 
     // Update is called once per frame
@@ -32,8 +37,8 @@ public class Rocket : MonoBehaviour
     {
 	    if(state == State.Alive) 
 	    {
-	    	Thrust();
-		    Rotate();
+	    	RespondToThrustInput();
+		    RespondToRotateInput();
 	    }
     }
     
@@ -41,33 +46,53 @@ public class Rocket : MonoBehaviour
 	{
 		if(state != State.Alive){return;}
 		
-		print("Collided!");
-		int sceneValue = 0;
 		switch (collision.gameObject.tag)
 		{
 			case "Friendly":
 				print("OK");
 				break;
 			case "Fuel":
-				print("Refueling!");
-				state = State.Alive;
+				StartCoroutine(StartFuelingSequence());
 				break;
 			case "Target":
-				print("Congratulations!");
-				state = State.Transcending;
-				sceneValue = 1;
-				StartCoroutine(LoadNextScene(sceneValue, delay));
+				StartSuccessSequence();
 				break;
 			default:
-				print("Dead!");
-				state = State.Dying;
-				sceneValue = 0;
-				StartCoroutine(LoadNextScene(sceneValue, delay));
+				StartDeathSequence();
 				break;
 		}
 	}
 	
 	// Methods
+	private void StartSuccessSequence() 
+	{
+		print("Congratulations!");
+		state = State.Transcending;
+		audioSource.Stop();
+		audioSource.PlayOneShot(success);
+		sceneValue = 1;
+		StartCoroutine(LoadNextScene(sceneValue, delay));
+	}
+	
+	IEnumerator StartFuelingSequence() 
+	{
+		print("Refueling!");
+		state = State.Alive;
+		GameObject.Find ("Notification").transform.localScale = new Vector3(1, 1, 1);
+		yield return new WaitForSeconds (5);
+		GameObject.Find ("Notification").transform.localScale = new Vector3(0, 0, 0);
+	}
+	
+	private void StartDeathSequence() 
+	{
+		print("Dead!");
+		state = State.Dying;
+		audioSource.Stop();
+		audioSource.PlayOneShot(death);
+		sceneValue = 0;
+		StartCoroutine(LoadNextScene(sceneValue, delay));
+	}
+	
 	IEnumerator LoadNextScene(int val, float delay)
 	{
 		switch (val)
@@ -87,17 +112,11 @@ public class Rocket : MonoBehaviour
 		}
 	}
 	
-	private void Thrust()
+	private void RespondToThrustInput()
 	{
 		if(Input.GetKey(KeyCode.Space))
 		{
-			print("Thrusters Activated!");
-			rigiBody.AddRelativeForce(Vector3.up * mainThrust);
-			
-			if(!audioSource.isPlaying)
-			{
-				audioSource.Play();
-			}
+			ApplyThrust();
 		}
 		else
 		{
@@ -105,7 +124,18 @@ public class Rocket : MonoBehaviour
 		}
 	}
 	
-	private void Rotate()
+	private void ApplyThrust()
+	{
+		print("Thrusters Activated!");
+		rigiBody.AddRelativeForce(Vector3.up * mainThrust);
+			
+		if(!audioSource.isPlaying)
+		{
+			audioSource.PlayOneShot(mainEngine);
+		}
+	}
+	
+	private void RespondToRotateInput()
 	{
 		
 		rigiBody.freezeRotation = true;
