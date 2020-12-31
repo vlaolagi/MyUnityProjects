@@ -19,6 +19,10 @@ public class Rocket : MonoBehaviour
 	[SerializeField] AudioClip success;
 	[SerializeField] AudioClip death;
 	
+	[SerializeField] ParticleSystem mainEngineParticles;
+	[SerializeField] ParticleSystem successParticles;
+	[SerializeField] ParticleSystem deathParticles;
+	
 	enum State {Alive, Dying, Transcending};
 	State state = State.Alive;
 
@@ -70,6 +74,7 @@ public class Rocket : MonoBehaviour
 		state = State.Transcending;
 		audioSource.Stop();
 		audioSource.PlayOneShot(success);
+		successParticles.Play();
 		sceneValue = 1;
 		StartCoroutine(LoadNextScene(sceneValue, delay));
 	}
@@ -89,6 +94,7 @@ public class Rocket : MonoBehaviour
 		state = State.Dying;
 		audioSource.Stop();
 		audioSource.PlayOneShot(death);
+		deathParticles.Play();
 		sceneValue = 0;
 		StartCoroutine(LoadNextScene(sceneValue, delay));
 	}
@@ -121,18 +127,20 @@ public class Rocket : MonoBehaviour
 		else
 		{
 			audioSource.Stop();
+			mainEngineParticles.Stop();
 		}
 	}
 	
 	private void ApplyThrust()
 	{
 		print("Thrusters Activated!");
-		rigiBody.AddRelativeForce(Vector3.up * mainThrust);
+		rigiBody.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime);
 			
 		if(!audioSource.isPlaying)
 		{
 			audioSource.PlayOneShot(mainEngine);
 		}
+		mainEngineParticles.Play();
 	}
 	
 	private void RespondToRotateInput()

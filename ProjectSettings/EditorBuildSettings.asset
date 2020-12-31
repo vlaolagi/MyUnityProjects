@@ -6,10 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Level 1.unity
+    path: Assets/Scenes/Level 1.unity
     guid: 7a702bb6b15dc5447bb3c4b4e2c4318e
   - enabled: 1
-    path: Assets/Level 2.unity
+    path: Assets/Scenes/Level 2.unity
     guid: 8449297106e79dd4dbcbf573abca6411
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 8f4e067581c7cbf43b284eaf22297e23,
