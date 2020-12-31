@@ -15,6 +15,7 @@ public class Rocket : MonoBehaviour
 	[SerializeField] float rcsThrust = 250f; // reaction control system
 	[SerializeField] float mainThrust = 50f; // reaction control system
 	[SerializeField] float delay = 3f;
+	[SerializeField] float fuel = 500f;
 	[SerializeField] AudioClip mainEngine;
 	[SerializeField] AudioClip success;
 	[SerializeField] AudioClip death;
@@ -23,10 +24,14 @@ public class Rocket : MonoBehaviour
 	[SerializeField] ParticleSystem successParticles;
 	[SerializeField] ParticleSystem deathParticles;
 	
-	enum State {Alive, Dying, Transcending};
+	[SerializeField] TextMesh fuelGauge;
+	
+	enum State {Alive, Dying, Transcending, OutOfFuel};
 	State state = State.Alive;
 
 	int sceneValue = 0;
+	
+	private bool isKeysEnabled = false;
 	
 	// Start is called before the first frame update
     void Start()
@@ -44,11 +49,12 @@ public class Rocket : MonoBehaviour
 	    	RespondToThrustInput();
 		    RespondToRotateInput();
 	    }
+	    fuelGauge.text = "Fuel: " + fuel;
     }
     
 	void OnCollisionEnter(Collision collision) 
 	{
-		if(state != State.Alive){return;}
+		if(state != State.Alive && state != State.OutOfFuel){return;}
 		
 		switch (collision.gameObject.tag)
 		{
@@ -85,6 +91,8 @@ public class Rocket : MonoBehaviour
 		state = State.Alive;
 		GameObject.Find ("Notification").transform.localScale = new Vector3(1, 1, 1);
 		yield return new WaitForSeconds (5);
+		fuel += 250f;
+		print("Additional Fuel Added!");
 		GameObject.Find ("Notification").transform.localScale = new Vector3(0, 0, 0);
 	}
 	
@@ -141,6 +149,21 @@ public class Rocket : MonoBehaviour
 			audioSource.PlayOneShot(mainEngine);
 		}
 		mainEngineParticles.Play();
+		fuel--;
+		
+		if(fuel < 0f)
+		{
+			print("Out of Fuel");
+			StartFreeFall();
+		}
+	}
+	
+	private void StartFreeFall()
+	{
+		
+		state = State.OutOfFuel;
+		audioSource.Stop();
+		mainEngineParticles.Stop();
 	}
 	
 	private void RespondToRotateInput()
@@ -152,12 +175,12 @@ public class Rocket : MonoBehaviour
 		
 		if(Input.GetKey(KeyCode.A))
 		{
-			print("Left Thruster Activated!");
+			// Left Thruster Activated!
 			transform.Rotate(Vector3.forward * rotationThisFrame);
 		}
 		else if(Input.GetKey(KeyCode.D))
 		{
-			print("Right Thruster Activated!");
+			// Right Thruster Activated!
 			transform.Rotate(-Vector3.forward * rotationThisFrame);
 		}
 		
