@@ -12,10 +12,10 @@ public class Rocket : MonoBehaviour
 	Rigidbody rigiBody;
 	AudioSource audioSource;
 	
-	[SerializeField] float rcsThrust = 250f; // reaction control system
-	[SerializeField] float mainThrust = 50f; // reaction control system
+	[SerializeField] float rcsThrust = 300f; // reaction control system
+	[SerializeField] float mainThrust = 1000f; // reaction control system
 	[SerializeField] float delay = 3f;
-	[SerializeField] float fuel = 500f;
+	[SerializeField] float fuel = 750f;
 	[SerializeField] AudioClip mainEngine;
 	[SerializeField] AudioClip success;
 	[SerializeField] AudioClip death;
@@ -30,8 +30,6 @@ public class Rocket : MonoBehaviour
 	State state = State.Alive;
 
 	int sceneValue = 0;
-	
-	private bool isKeysEnabled = false;
 	
 	// Start is called before the first frame update
     void Start()
@@ -60,6 +58,10 @@ public class Rocket : MonoBehaviour
 		{
 			case "Friendly":
 				print("OK");
+				if(fuel<=0)
+				{
+					StartDeathSequence();
+				}
 				break;
 			case "Fuel":
 				StartCoroutine(StartFuelingSequence());
@@ -91,7 +93,7 @@ public class Rocket : MonoBehaviour
 		state = State.Alive;
 		GameObject.Find ("Notification").transform.localScale = new Vector3(1, 1, 1);
 		yield return new WaitForSeconds (5);
-		fuel += 250f;
+		fuel += 350f;
 		print("Additional Fuel Added!");
 		GameObject.Find ("Notification").transform.localScale = new Vector3(0, 0, 0);
 	}

@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
-  m_Sun: {fileID: 0}
+  m_Sun: {fileID: 1448167356914870094}
   m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
@@ -1751,6 +1751,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 1.7830001
       objectReference: {fileID: 0}
+    - target: {fileID: 1448167356896442738, guid: 4be330572dfd1104f939b8127dc00778,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1448167356896442739, guid: 4be330572dfd1104f939b8127dc00778,
         type: 3}
       propertyPath: m_Name
@@ -1758,6 +1763,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4be330572dfd1104f939b8127dc00778, type: 3}
+--- !u!108 &1448167356914870094 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 1448167356896442738, guid: 4be330572dfd1104f939b8127dc00778,
+    type: 3}
+  m_PrefabInstance: {fileID: 1448167356914870093}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1896374559727063930
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1848,6 +1859,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Main Camera
+      objectReference: {fileID: 0}
+    - target: {fileID: 705756807395694360, guid: 28ef85aa95aee7948a594bd15b0c2dd5,
+        type: 3}
+      propertyPath: field of view
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 705756807395694360, guid: 28ef85aa95aee7948a594bd15b0c2dd5,
+        type: 3}
+      propertyPath: m_projectionMatrixMode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1331868138716319585, guid: 28ef85aa95aee7948a594bd15b0c2dd5,
         type: 3}
@@ -2062,16 +2083,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1257162287132195960, guid: 3ee5b3de0e4020842978bd02ea9a3ac6,
-        type: 3}
-      propertyPath: m_Mass
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 1257162287132195960, guid: 3ee5b3de0e4020842978bd02ea9a3ac6,
-        type: 3}
-      propertyPath: m_AngularDrag
-      value: 0.07
-      objectReference: {fileID: 0}
     - target: {fileID: 1257162287132195961, guid: 3ee5b3de0e4020842978bd02ea9a3ac6,
         type: 3}
       propertyPath: m_Name
@@ -2131,16 +2142,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5783983781472911061, guid: 3ee5b3de0e4020842978bd02ea9a3ac6,
-        type: 3}
-      propertyPath: rcsThrust
-      value: 300
-      objectReference: {fileID: 0}
-    - target: {fileID: 5783983781472911061, guid: 3ee5b3de0e4020842978bd02ea9a3ac6,
-        type: 3}
-      propertyPath: fuel
-      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 5783983781472911061, guid: 3ee5b3de0e4020842978bd02ea9a3ac6,
         type: 3}

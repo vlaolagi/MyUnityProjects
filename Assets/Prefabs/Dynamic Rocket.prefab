@@ -96,7 +96,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0.5
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0.07
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -210,15 +210,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56e6e64efdc412b408acdc1f66e13fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rcsThrust: 250
-  mainThrust: 50
+  rcsThrust: 300
+  mainThrust: 1000
   delay: 3
+  fuel: 750
   mainEngine: {fileID: 8300000, guid: 36ac9542173e4a9408e43c48fee33b76, type: 3}
   success: {fileID: 8300000, guid: 79f94612b85637e439180b21d7172147, type: 3}
   death: {fileID: 8300000, guid: 6d07e111f4ecced4092864ba62776ef1, type: 3}
   mainEngineParticles: {fileID: 2130504047392664851}
   successParticles: {fileID: 837396207108237357}
   deathParticles: {fileID: 4550639378222205549}
+  fuelGauge: {fileID: 0}
 --- !u!1 &1292062509854691144
 GameObject:
   m_ObjectHideFlags: 0
